@@ -105,6 +105,11 @@
         // store display image width and height
         image.width = newWidth;
         image.height = newHeight;
+        if (image.order == 1) {
+            this._editMarkimg(newWidth, newHeight, left, top);
+        }
+        console.log(image);
+
 
         // set center point
         image.centerPoint = {x: left + newWidth / 2, y: top + newHeight / 2};
@@ -182,9 +187,17 @@
             ].join(''),
             removeIconValue = 'scale(' + 1 / transform.scale + ', ' + 1 / transform.scale + ')';
 
+        
         imgWrapper.style.webkitTransform = value;
         imgWrapper.style.mozTransform = value;
         imgWrapper.style.transform = value;
+        var markimg = document.getElementById("markimg");
+
+        markimg.style.webkitTransform = value;
+        markimg.style.mozTransform = value;
+        markimg.style.transform = value;
+        ///markimg.style.width="700px";
+
 
         // keep remove icon not scaled
         // removeIcon.style.webkitTransform = removeIconValue;
@@ -290,7 +303,7 @@
           defaultObj = $.extend(defaultObj, url);
         }
 
-        console.log('pre process', defaultObj);
+        //console.log('pre process', defaultObj);
         return defaultObj;
       },
 
@@ -379,7 +392,7 @@
       },
 
       setImage: function(url, index, select) {
-        console.log(this.images.length);
+        //console.log(this.images.length);
         if(index > this.images.length - 1)
           // throw new Error('index out of range');
           return;
@@ -423,6 +436,15 @@
         });
         
         $img.attr('src', url.url);
+      },
+      _editMarkimg:function(width, height, left = null, top = null) {
+          $('#markimg').css('width', width);
+          $('#markimg').css('height', height);
+          if (left != null) {
+              $('#markimg').css('left', left);
+              $('#markimg').css('top', top);
+              $('#markimg').css('box-sizing', 'border-box');
+          }
       },
 
       // removeImage: function(index) {
@@ -496,11 +518,7 @@ console.log(this.activeImage);
             image.$mask.css('background', 'rgba(0,0,0,0)')
         });
       },
-
       mergeImage: function() {
-
-     
-
         var cvs = document.createElement('canvas'),
             ctx = cvs.getContext('2d'),
             that = this;
