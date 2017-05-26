@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" 
+			content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html">
+		<meta charset="utf-8">
+		<meta property="og:image" content="http://www.51pptmoban.com/d/file/2015/11/27/2123f7686d354b4d1b67b99a7f657747.jpg">
+		<title>ImageEditor Demo</title>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				font-family: arial;
+			}
+			.leftpage{
+　width:120px;
+　float:left;
+　height:280px;
+　text-align:center;
+　line-height:280px;
+　font-size:15px;
+　color:#ffffff;
+　font-weight:bold;
+　background-color:#cecece;
+}
+.rightpage{
+　width:240px;
+　height:280px;
+　text-align:center;
+　line-height:280px;
+　font-size:15px;
+　color:#f9c81e;
+　font-weight:bold;
+　background-color:#fffaf3;
+　float:left;
+}
+			
+			#editor {
+				margin-top: 20px;
+				border: 1px solid black;
+			}
+			.tool-control {
+				display: flex;
+				margin-top: 10px;
+			}
+			.flex-1 {
+				flex: 1;
+			}
+			.flex-2 {
+				flex: 2;
+			}
+			.flex-3 {
+				flex: 3;
+			}
+			.flex-4 {
+				flex: 4;
+			}
+			#frameList > li {
+				display: inline-block;
+			}
+			.pri-btn {
+				padding: 20px;
+				border-radius: 5px;
+				margin-right: 20px;
+			}
+			#outputs {
+				margin-top: 40px;
+				border-top: 1px dashed grey;
+			}
+			
+		</style>
+
+		<script src='../public/scripts/jquery.js'></script>
+		<script src="../public/scripts/hammer.min.js"></script>
+		<script src='../public/scripts/ImageEditor.js?754578'></script>
+		<script src='../public/scripts/exif.js'></script>
+		<script src='../public/scripts/binaryajax.js'></script>
+		<script src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>
+
+
+		<script>
+window.onerror = function(msg, url, linenumber) {
+    alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+    return true;
+}
+			var editor = null;
+			$(document).ready(function() {
+				editor = $('#editor').ImageEditor({
+					imageUrls: [
+						'../public/images/pic-3.jpg',
+						'../public/images/fb01.png',
+						// '../public/images/btn_photo_2.png',
+
+					],
+					// removeIcon: '../public/images/delete.png',
+					width: 900,
+					height: 471,
+					onInitCompleted: function() {
+						editor.selectImage(4); 
+					}
+				});
+
+			});
+
+			function confirmImage() {
+				var cvs = editor.mergeImage(),
+					$img = $('<img>');
+
+ 				var data = cvs.toDataURL();
+ 				var image1 = new Image();  
+           		
+           		// var image2 = new Image();
+				var cvs = document.createElement('canvas');
+            		var ctx = cvs.getContext('2d');
+           		
+            	image1.onload = function() {
+            		cvs.width  = this.width;
+				    cvs.height = this.height;
+					ctx.drawImage(image1, 0 ,0, 1125,471);
+           			var image2 = new Image(); 
+
+           			//$('#outputs').append(image2);
+      //      			image2.src="../public/images/fb02.png";
+              			image2.onload = function() {
+							   
+						       ctx.drawImage(image2, 0 ,0, 1125,471);
+						       ctx.font = "18pt Calibri";
+       						   ctx.fillText("林哲宇Zheyu", 10, 150);
+
+						       
+
+					       	
+							 var image3 = new Image();
+						 	  image3.src = cvs.toDataURL();
+
+						 	  console.log(cvs.toDataURL());
+							  $('#outputs').append(image3);
+             			}
+              			image2.src="../public/images/fb02.png";
+            	};
+
+            	image1.src = data;
+
+				
+			  //$('#outputs').append($(cvs));
+			}
+			
+		var _exif;
+ 		$(function (){
+
+ 
+    function format_float(num, pos)
+    {
+        var size = Math.pow(10, pos);
+        return Math.round(num * size) / size;
+    }
+ function base64ToArrayBuffer (base64) {
+    base64 = base64.replace(/^data\:([^\;]+)\;base64,/gmi, '');
+    var binaryString = atob(base64);
+    var len = binaryString.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+    function preview(input) {
+ 
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+           reader.onload = function (e) {
+                // $('.preview').attr('src', e.target.result);
+                   var exif = EXIF.readFromBinaryFile(base64ToArrayBuffer(e.target.result));
+ 				
+                $('#picUrl').attr('value', e.target.result);
+            
+                editor.setImage($("#picUrl").val(), 0,true);
+				
+            };
+ 
+            reader.readAsDataURL(input.files[0]);
+
+        }
+        
+    }
+ 
+    $("body").on("change", ".upl", function (){
+    	
+        selectFileImage(this);
+    })
+    // @param {string} img 图片的base64
+// @param {int} dir exif获取的方向信息
+// @param {function} next 回调方法，返回校正方向后的base64
+ function selectFileImage(fileObj) {  
+    var file = fileObj.files['0'];  
+    //图片方向角 added by lzk  
+    var Orientation = null;  
+      
+    if (file) {  
+  
+        var rFilter = /^(image\/jpeg|image\/png)$/i;  
+        if (!rFilter.test(file.type)) {  
+            
+            return;  
+        }  
+        
+        EXIF.getData(file, function() {  
+           // alert(EXIF.pretty(this));  
+            EXIF.getAllTags(this);   
+            //alert(EXIF.getTag(this, 'Orientation'));   
+            Orientation = EXIF.getTag(this, 'Orientation');  
+            //return;  
+        });  
+          
+        var oReader = new FileReader();  
+        oReader.onload = function(e) {  
+            //var blob = URL.createObjectURL(file);  
+            //_compress(blob, file, basePath);  
+            var image = new Image();  
+            image.src = e.target.result;  
+            image.onload = function() {  
+                var expectWidth = this.naturalWidth;  
+                var expectHeight = this.naturalHeight;  
+                  
+                if (this.naturalWidth > this.naturalHeight && this.naturalWidth > 800) {  
+                    expectWidth = 800;  
+                    expectHeight = expectWidth * this.naturalHeight / this.naturalWidth;  
+                } else if (this.naturalHeight > this.naturalWidth && this.naturalHeight > 1200) {  
+                    expectHeight = 1200;  
+                    expectWidth = expectHeight * this.naturalWidth / this.naturalHeight;  
+                }  
+                var canvas = document.createElement("canvas");  
+                var ctx = canvas.getContext("2d");  
+                canvas.width = expectWidth;  
+                canvas.height = expectHeight;  
+                ctx.drawImage(this, 0, 0, expectWidth, expectHeight);  
+                var base64 = null;  
+                //修正ios轉向問題  
+                if (navigator.userAgent.match(/iphone/i)) {  
+                    console.log(Orientation);  
+                     
+                    if(Orientation != "" && Orientation != 1){    
+                        switch(Orientation){  
+                            case 6: 
+                                 
+                                rotateImg(this,'left',canvas);  
+                                break;  
+                            case 8:
+                                rotateImg(this,'right',canvas);  
+                                break;  
+                            case 3:  
+                                rotateImg(this,'right',canvas); 
+                                rotateImg(this,'right',canvas);  
+                                break;  
+                        }         
+                    }  
+                      
+                   
+                    base64 = canvas.toDataURL("image/jpeg", 1);  
+                    $('#picUrl').attr('value', base64);
+                }else{
+                	$('#picUrl').attr('value',e.target.result);
+                }
+
+                
+            
+                editor.setImage($("#picUrl").val(), 0,true); 
+            };  
+        };  
+        oReader.readAsDataURL(file);  
+    }  
+}  
+  
+ 
+function rotateImg(img, direction,canvas) {    
+        //alert(img);  
+        //最小与最大旋转方向，图片旋转4次后回到原方向    
+        var min_step = 0;    
+        var max_step = 3;    
+        //var img = document.getElementById(pid);    
+        if (img == null)return;    
+        //img的高度和宽度不能在img元素隐藏后获取，否则会出错    
+        var height = img.height;    
+        var width = img.width;    
+        //var step = img.getAttribute('step');    
+        var step = 2;    
+        if (step == null) {    
+            step = min_step;    
+        }    
+        if (direction == 'right') {    
+            step++;    
+            //旋转到原位置，即超过最大值    
+            step > max_step && (step = min_step);    
+        } else {    
+            step--;    
+            step < min_step && (step = max_step);    
+        }    
+          
+        var degree = step * 90 * Math.PI / 180;    
+        var ctx = canvas.getContext('2d');    
+        switch (step) {    
+            case 0:    
+                canvas.width = width;    
+                canvas.height = height;    
+                ctx.drawImage(img, 0, 0);    
+                break;    
+            case 1:    
+                canvas.width = height;    
+                canvas.height = width;    
+                ctx.rotate(degree);    
+                ctx.drawImage(img, 0, -height);    
+                break;    
+            case 2:    
+                canvas.width = width;    
+                canvas.height = height;    
+                ctx.rotate(degree);    
+                ctx.drawImage(img, -width, -height);    
+                break;    
+            case 3:    
+                canvas.width = height;    
+                canvas.height = width;    
+                ctx.rotate(degree);    
+                ctx.drawImage(img, -width, 0);    
+                break;    
+        }    
+    }    
+})
+
+ 	
+		</script>
+
+	</head>
+
+	<body>
+		<div class='leftpage'>
+			<h1 id="title">蜘蛛人</h1>
+			<div id='editor' class="cropit-preview">
+			</div>
+		</div>
+		<div class='rightpage'>
+			
+				<input type='hidden' id='picUrl' placeholder='image url' />
+				             
+				<form>
+					<input type='file' id="uploadphoto" class="upl" accept="image/*;capture=camera" style="display:none">
+					<label for="uploadphoto"><img id="imagesButton2" width="30%"src="../public/images/btn_photo_2.png"></label>
+					
+				</form> 
+			
+			<!--<div class='tool-control'>
+				<ul id='frameList'>
+					<li>
+						<img height='60' 
+							src='../public/images/g1_poseb1.png' 
+							onclick='editor.setImage(this.src, 1);' />
+					</li>
+					<li>
+						<img height='60' 
+							src='../public/images/g1_poseb2.png'
+							onclick='editor.setImage(this.src, 1);' />
+					</li>
+					<li>
+						<img height='60' 
+							src='../public/images/g1_poseb3.png' 
+							onclick='editor.setImage(this.src, 1);' />
+					</li>
+					<li>
+						<img height='60' 
+							src='../public/images/g1_poseb4.png'
+							onclick='editor.setImage(this.src, 1);' />
+					</li>
+					<li>
+						<img height='60' 
+							src='../public/images/g1_poseb5.png'
+							onclick='editor.setImage(this.src, 1);' />
+					</li>
+					<li>
+						<img height='60' 
+							src='../public/images/delete.png'
+							onclick='editor.setImage(this.src, 2);' />
+					</li>
+					</ul>
+			</div>-->
+			<div class='tool-control'>
+				<label class='flex-1'>ROTATE</label>
+				<input class='flex-2' 
+					type='range' 
+					min='-180' 
+					max='180' 
+					id='rotateControl' 
+					oninput='editor.rotateImage(this.value);' />
+			</div>
+			<div class='tool-control'>
+				<label class='flex-1'>SCALE</label>
+				<input class='flex-2' 
+					type='range'
+					id='scaleControl'
+					min='0.1'
+					max='2.0'
+					step='0.05'
+					oninput='editor.scaleImage(this.value, this.value);' />
+			</div>
+			<div class='tool-control'>
+				<button class='pri-btn' onclick='confirmImage()'>合成圖片</button>
+			</div>
+			
+			<div id='outputs'>
+			</div>
+			<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
+		</div>
+<div class="line-it-button" data-lang="zh_Hant" data-type="share-a" data-url="http://events.adbert.com.tw/ImageEditor-master/app/demo.html?1234451" style="display: none;"></div>
+ <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js?456156" async="async" defer="defer"></script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.3&appId=1454576781470359";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+	</body>
+</html>
