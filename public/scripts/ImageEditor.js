@@ -398,7 +398,6 @@
 
         $img.attr('src', url.url);
       },
-
       setImage: function(url, index, select) {
         //console.log(this.images.length);
         if(index > this.images.length - 1)
@@ -445,6 +444,10 @@
         $img.attr('src', url.url);
       },
       _editMarkimg:function(width, height, left = null, top = null) {
+         $('#marking').remove();
+         $('#editor').append('<div id="markimg" style="display:none"></div>');
+
+
           $('#markimg').css('width', width);
           $('#markimg').css('height', height);
           if (left != null) {
