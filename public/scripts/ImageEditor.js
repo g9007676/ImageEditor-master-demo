@@ -445,52 +445,52 @@
           }
       },
 
-      // removeImage: function(index) {
-      //   var targetImage;
+       removeImage: function(index) {
+         var targetImage;
 
-      //   if(typeof index == 'object') {
-      //     targetImage = this.images.filter(function(image) {
-      //       return image.id == index.id;
-      //     })[0];
+         if(typeof index == 'object') {
+           targetImage = this.images.filter(function(image) {
+             return image.id == index.id;
+           })[0];
 
-      //     if(targetImage)
-      //       index = targetImage.order - 1;
-      //     else
-      //       // throw new Error('cannot remove an image that not exists');
-      //       return;
-      //   }
+           if(targetImage)
+             index = targetImage.order - 1;
+           else
+             // throw new Error('cannot remove an image that not exists');
+             return;
+         }
 
-      //   this.images = this.images.filter(function(image, i) {
-      //     var keep = true;
+         this.images = this.images.filter(function(image, i) {
+           var keep = true;
 
-      //     if(index == i) {
-      //       keep = false;
-      //       if(this.options.removeImageAnimation)
-      //         image.$imgWrapper.fadeOut('fast', function() {
-      //           image.$imgWrapper.remove();
-      //         });
-      //       else
-      //         image.$imgWrapper.remove();
-      //     }
+           if(index == i) {
+             keep = false;
+             if(this.options.removeImageAnimation)
+               image.$imgWrapper.fadeOut('fast', function() {
+                 image.$imgWrapper.remove();
+               });
+             else
+               image.$imgWrapper.remove();
+           }
 
-      //     if(i > index)
-      //       image.order --;
+           if(i > index)
+             image.order --;
 
-      //     return keep;
-      //   }.bind(this));
-      // },
+           return keep;
+         }.bind(this));
+       },
 
-      // removeAll: function() {
-      //   for(var i = this.images.length - 1; i >= 0; i --)
-      //     this.removeImage(i)
-      // },
+       removeAll: function() {
+         for(var i = this.images.length - 1; i >= 0; i --)
+           this.removeImage(i)
+       },
 
-      // reset: function() {
-      //   this.removeAll();
-      //   this.options.imageUrls.forEach(function(url) {
-      //     this.addImage(url, false);
-      //   }.bind(this));
-      // },
+       reset: function() {
+         this.removeAll();
+         this.options.imageUrls.forEach(function(url) {
+           this.addImage(url, false);
+         }.bind(this));
+       },
 
       selectImage: function(index) {
         var targetImage;
