@@ -351,7 +351,7 @@
               img: null,
               $imgWrapper: null,
               $removeIcon: null,
-              order: this.images.length + 1, // starts from 1
+              order:  1, // starts from 1
               height: 0, // origin height once placed into the container
               width: 0, // origin width once placed into the container
               centerPoint: {x: 0, y: 0},
@@ -416,7 +416,7 @@
             img: this,
             $imgWrapper: null,
             // $removeIcon: null,
-            order: index + 1, // starts from 1
+            order:  0, // starts from 1//更改預設寫入都是第一張
             height: 0, // origin height once placed into the container
             width: 0, // origin width once placed into the container
             centerPoint: {x: 0, y: 0},

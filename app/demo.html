@@ -237,7 +237,9 @@ window.onerror = function(msg, url, linenumber) {
                 }
 
                 
-            
+//                editor.removeImage(0);
+                editor.reset();
+//                console.log(editor.images);
                 editor.setImage($("#picUrl").val(), 0,true); 
             };  
         };  
