@@ -328,12 +328,18 @@
 
       rotateImage: function(deg) {
         var image = this.activeImage;
+        if (typeof image == 'undefined') {
+            return;
+        }
         image.transform.rotation = this.startRotation + deg * 1;
         this._updateImageTransform(image);
       },
 
       scaleImage: function(scale) {
         var image = this.activeImage;
+        if (typeof image == 'undefined') {
+            return;
+        }
         image.transform.scale = scale;
         this._updateImageTransform(image);
       },
