@@ -68,7 +68,15 @@
 			#outputs {
 				margin-top: 40px;
 				border-top: 1px dashed grey;
-			}
+            }
+            #markimg {
+                position: absolute;
+                z-index: 9999;
+                cursor: move;
+                border: 0px dashed #fff;
+                opacity: 0.5;
+                border-width: 2px;
+            }
 			
 		</style>
 
@@ -304,15 +312,6 @@ function rotateImg(img, direction,canvas) {
 
  	
 		</script>
-        <style>
-#markimg {
-    position: absolute;
-    z-index: 9999;
-    border: 1px dotted;
-    border-color: rgba(100%,100%,100%,0.5);
-    cursor: move;
-}
-        </style>
 	</head>
 	<body>
 		<div class='leftpage'>
