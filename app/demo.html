@@ -310,17 +310,24 @@ function rotateImg(img, direction,canvas) {
 
  	
 		</script>
-
+        <style>
+#markimg {
+    position: absolute;
+    z-index: 9999;
+    border: 1px dotted;
+    border-color: rgba(100%,100%,100%,0.5);
+    cursor: move;
+}
+        </style>
 	</head>
-
 	<body>
 		<div class='leftpage'>
 			<h1 id="title">蜘蛛人</h1>
 			<div id='editor' class="cropit-preview">
+                <div id="markimg"></div>
 			</div>
 		</div>
 		<div class='rightpage'>
-			
 				<input type='hidden' id='picUrl' placeholder='image url' />
 				             
 				<form>
