@@ -362,7 +362,7 @@
               }
             };
 
-        this.images.push(image);
+        this.images[1] = image;
 
         $img.on('load', function() {
           image.$imgWrapper = $('<span>').append($(this));
@@ -398,7 +398,7 @@
 
         url = this._preProcessImageUrl(url);
 
-        var image = this.images[index],
+        var image = this.images[0],
             $img = $('<img>'),
             that = this;
 
@@ -498,7 +498,6 @@
           targetImage = this.images.filter(function(image) {
             return image.id == index.id;
           })[0];
-console.log(this.activeImage);
           if(targetImage)
             index = targetImage.order - 1;
           else
