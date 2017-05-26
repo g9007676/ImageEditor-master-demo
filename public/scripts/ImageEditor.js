@@ -105,7 +105,7 @@
         // store display image width and height
         image.width = newWidth;
         image.height = newHeight;
-        if (image.order == 1) {
+        if (image.order == 0) {
             this._editMarkimg(newWidth, newHeight, left, top);
         }
 
@@ -206,6 +206,9 @@
 
       _onPan: function(e) {
         var image = this.activeImage;
+        if (typeof image == 'undefined') {
+            return;
+        }
 
         if(e.type == 'panstart') {
           this.startPan = {
@@ -443,6 +446,7 @@
               $('#markimg').css('top', top);
               $('#markimg').css('box-sizing', 'border-box');
           }
+          $('#markimg').show();
       },
 
        removeImage: function(index) {
