@@ -120,21 +120,15 @@ window.onerror = function(msg, url, linenumber) {
 					ctx.drawImage(image1, 0 ,0, 900,471);
            			var image2 = new Image(); 
 
-           			//$('#outputs').append(image2);
-      //      			image2.src="../public/images/fb02.png";
               			image2.onload = function() {
 							   
 						       ctx.drawImage(image2, 0 ,0, 900,471);
 						       ctx.font = "18pt Calibri";
        						   ctx.fillText("林哲宇Zheyu", 10, 150);
-
-						       
-
 					       	
 							 var image3 = new Image();
 						 	  image3.src = cvs.toDataURL();
 
-						 	  console.log(cvs.toDataURL());
 							  $('#outputs').append(image3);
              			}
               			image2.src="../public/images/fb02.png";
@@ -166,7 +160,6 @@ window.onerror = function(msg, url, linenumber) {
     return bytes.buffer;
 }
     $("body").on("change", ".upl", function (){
-    	
         selectFileImage(this);
     })
     // @param {string} img 图片的base64

@@ -108,7 +108,6 @@
         if (image.order == 1) {
             this._editMarkimg(newWidth, newHeight, left, top);
         }
-        console.log(image);
 
 
         // set center point
@@ -431,7 +430,6 @@
           image.$imgWrapper = $('<span>').append($(this));
           that.images[index] = image;
           that._placeImage(image);
-          // that.selectImage(index);
           select && that.selectImage(index);
         });
         
