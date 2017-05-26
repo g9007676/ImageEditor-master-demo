@@ -452,9 +452,9 @@
               $('#markimg').css('top', top);
               $('#markimg').css('box-sizing', 'border-box');
           }
+          $('#markimg').css('transform', '');
           $('#markimg').show();
       },
-
        removeImage: function(index) {
          var targetImage;
 
@@ -500,6 +500,9 @@
          this.options.imageUrls.forEach(function(url) {
            this.addImage(url, false);
          }.bind(this));
+         $('[class=flex-2]').attr('disabled', false);
+         $("#scaleControl").val(1.05);
+         $("#rotateControl").val(0.4);
        },
 
       selectImage: function(index) {
