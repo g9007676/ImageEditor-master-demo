@@ -525,10 +525,10 @@
 
         this.images.forEach(function(image, i) {
 
-          if(index == i)
-            image.$mask.css('background', 'rgba(0,0,0,0)')
-          else
-            image.$mask.css('background', 'rgba(0,0,0,0)')
+       //   if(index == i)
+       //     image.$mask.css('background', 'rgba(0,0,0,0)')
+       //   else
+       //     image.$mask.css('background', 'rgba(0,0,0,0)')
         });
       },
       mergeImage: function() {
